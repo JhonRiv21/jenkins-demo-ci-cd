@@ -1,10 +1,23 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:22.14.0'
+        }
+    }
     stages {
-        stage('Checkout') {
+        stage('Install dependencies') {
             steps {
-                checkout scm
-                sh 'ls -la'
+                sh 'npm install'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'npm test'
             }
         }
     }
